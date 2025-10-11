@@ -21,15 +21,25 @@ fun AppBarView(
 ){
 
     val navigationIcon : (@Composable () -> Unit)? = {
-        IconButton(onClick = {
-            onBackNavClicked()
-        }) {
+        if(!title.contains("fuck")){
 
-            Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack, tint = Color.White , contentDescription = null)
+            IconButton(onClick = {
+                onBackNavClicked()
+            }) {
+
+                Icon(imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    tint = Color.White ,
+                    contentDescription = null)
+            }
+        }else{
+            null
         }
+
+
     }
 
-    TopAppBar(title = { Text("$title", color = colorResource(id = R.color.white) ,
+    TopAppBar(title = { Text(
+        title, color = colorResource(id = R.color.white) ,
         modifier = Modifier.padding(start = 4.dp ).heightIn(max = 24.dp)) },
         elevation = 3.dp,
         backgroundColor = colorResource(id = R.color.app_bar_color),
