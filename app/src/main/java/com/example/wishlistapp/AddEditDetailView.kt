@@ -3,14 +3,26 @@ package com.example.wishlistapp
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.text.KeyboardOptions
+//import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Text
+import androidx.compose.material3.Button
+//import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.TextFieldDefaults
+//import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
@@ -19,6 +31,9 @@ fun AddEditDetialView(id: Long, viewModel: WishViewModel, navController: NavCont
 
     Scaffold (topBar = {
         AppBarView(
+            onBackNavClicked = {
+                navController.navigateUp()
+            },
             title = if (id != 0L) stringResource(id = R.string.Update_Wish) else stringResource(
                 id = R.string.Add_Wish
             ))
@@ -28,8 +43,49 @@ fun AddEditDetialView(id: Long, viewModel: WishViewModel, navController: NavCont
             verticalArrangement = Arrangement.Center
             ) {
             Spacer(Modifier.height(10.dp))
+            WishTextField(label = "Title", value = viewModel.wishTitleState, onvaluechanged = {
+                viewModel.onWishTitleChanged(it)
+            })
+            Spacer(Modifier.height(10.dp))
+            WishTextField(label = "Desc", value = viewModel.wishDescState, onvaluechanged = {
+                viewModel.onWishDescChanged(it)
+            })
+            Spacer(Modifier.height(10.dp))
+            Button(onClick = {
+                if(viewModel.wishTitleState.isNotEmpty() && viewModel.wishDescState.isNotEmpty()){
+
+                }else{
+                    //add wish
+                }
+
+            }) {
+                Text(text = if (id != 0L) stringResource(id = R.string.Update_Wish) else stringResource(
+                    id = R.string.Add_Wish))
+            }
 
         }
     }
 
+}
+
+
+@Composable
+fun WishTextField(
+    label: String,
+    value: String,
+    onvaluechanged: (String)-> Unit
+
+){
+    OutlinedTextField(value = value, onValueChange = onvaluechanged, label = { Text( text = label, color = Color.Black) },
+        modifier = Modifier.fillMaxWidth(), keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+//        colors = TextFieldDefaults.textFieldColors(textColor = Color.Black, )
+
+        )
+}
+
+@Preview
+@Composable
+
+fun WishTstFeildprev(){
+    WishTextField(label = "text", value = "Text", onvaluechanged = {})
 }

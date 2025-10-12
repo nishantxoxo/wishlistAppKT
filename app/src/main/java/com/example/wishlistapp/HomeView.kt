@@ -26,19 +26,26 @@ import androidx.compose.ui.layout.ModifierInfo
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.wishlistapp.data.DummyWish
 import com.example.wishlistapp.data.Wish
 
 @Composable
-fun HomeView(){
+fun HomeView(navController: NavController,
+viewModel: WishViewModel
+){
     val context =  LocalContext.current
 
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(modifier = Modifier.padding(all = 20.dp) ,
                 onClick = {
-                    Toast.makeText(context, "FAB clicked", Toast.LENGTH_LONG ).show()
+                            navController.navigate(Screen.AddScreen.route)
+
+                //                    Toast.makeText(context, "FAB clicked", Toast.LENGTH_LONG ).show()
                 },
+
+
                 contentColor = Color.Blue,
                 backgroundColor = Color.White
                 ) {
