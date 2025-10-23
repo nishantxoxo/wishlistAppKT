@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.wishlistapp.data.Wish
 import com.example.wishlistapp.data.WishRepo
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
@@ -32,8 +33,26 @@ class WishViewModel(private val wishRepo: WishRepo) : ViewModel() {
 
 
     fun addWish(wish: Wish){
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             wishRepo.addWish(wish)
         }
     }
+
+    fun getAWishById(id: Long):Flow<Wish>{
+        return wishRepo.getWishByID(id)
+    }
+
+
+    fun updateWish(wish: Wish){
+        viewModelScope.launch(Dispatchers.IO) {
+            wishRepo.updateWish(wish)
+        }
+    }
+
+    fun deleteWish(wish: Wish){
+        viewModelScope.launch(Dispatchers.IO) {
+            wishRepo.deleteWish(wish)
+        }
+    }
+
 }
