@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
 //import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Button
 //import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.OutlinedTextField
@@ -17,6 +18,9 @@ import androidx.compose.material3.TextFieldDefaults
 //import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,9 +29,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.wishlistapp.data.Wish
 
 @Composable
 fun AddEditDetialView(id: Long, viewModel: WishViewModel, navController: NavController ){
+
+    val snackmessage = remember { mutableStateOf("") }
+
+    val scope = rememberCoroutineScope()
+
+
+    val scaffoldState = rememberScaffoldState()
 
     Scaffold (topBar = {
         AppBarView(
@@ -53,9 +65,16 @@ fun AddEditDetialView(id: Long, viewModel: WishViewModel, navController: NavCont
             Spacer(Modifier.height(10.dp))
             Button(onClick = {
                 if(viewModel.wishTitleState.isNotEmpty() && viewModel.wishDescState.isNotEmpty()){
+                    if(id != 0L){
+                        //update
+                    }
+                    else{
+                        //add wish
+                        viewModel.addWish(Wish(title = viewModel.wishTitleState, description = viewModel.wishDescState))
 
+                    }
                 }else{
-                    //add wish
+                    snackmessage.value = "enter fields to create a wish"
                 }
 
             }) {

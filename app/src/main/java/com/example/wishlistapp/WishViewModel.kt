@@ -11,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
-class WishViewModel(private val wishRepo: WishRepo) : ViewModel() {
+class WishViewModel(private val wishRepo: WishRepo = Graph.wishRepo ) : ViewModel() {
     var wishTitleState by mutableStateOf("")
     var wishDescState by mutableStateOf("")
 
