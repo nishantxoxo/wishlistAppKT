@@ -19,6 +19,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -40,7 +41,7 @@ viewModel: WishViewModel
         floatingActionButton = {
             FloatingActionButton(modifier = Modifier.padding(all = 20.dp) ,
                 onClick = {
-                            navController.navigate(Screen.AddScreen.route)
+                            navController.navigate(Screen.AddScreen.route + "/0L")
 
                 //                    Toast.makeText(context, "FAB clicked", Toast.LENGTH_LONG ).show()
                 },
@@ -56,9 +57,14 @@ viewModel: WishViewModel
         topBar = { AppBarView(title = "aaaa", {
         Toast.makeText(context, "button clicked", Toast.LENGTH_LONG ).show()
     }) }) {
+        val wishlist  = viewModel.getaAllWishes.collectAsState(initial = listOf())
+
         LazyColumn(modifier = Modifier.fillMaxSize().padding(it)) {
-            items(DummyWish.wishList){
-                it -> WishItem(wish= it) { }
+            items(wishlist.value){
+                it -> WishItem(wish= it) {
+                    val id = it.id
+                navController.navigate(Screen.AddScreen.route + "/$id")
+            }
             }
         }
     }

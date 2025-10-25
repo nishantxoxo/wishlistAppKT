@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Scaffold
 //import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
@@ -16,7 +17,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.TextFieldDefaults
 //import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
+//import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.wishlistapp.data.Wish
+import kotlinx.coroutines.launch
 
 @Composable
 fun AddEditDetialView(id: Long, viewModel: WishViewModel, navController: NavController ){
@@ -41,7 +43,7 @@ fun AddEditDetialView(id: Long, viewModel: WishViewModel, navController: NavCont
 
     val scaffoldState = rememberScaffoldState()
 
-    Scaffold (topBar = {
+    Scaffold (  topBar = {
         AppBarView(
             onBackNavClicked = {
                 navController.navigateUp()
@@ -49,7 +51,7 @@ fun AddEditDetialView(id: Long, viewModel: WishViewModel, navController: NavCont
             title = if (id != 0L) stringResource(id = R.string.Update_Wish) else stringResource(
                 id = R.string.Add_Wish
             ))
-    }){
+    }, scaffoldState = scaffoldState){
         Column(modifier = Modifier.padding(it).wrapContentSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -71,12 +73,15 @@ fun AddEditDetialView(id: Long, viewModel: WishViewModel, navController: NavCont
                     else{
                         //add wish
                         viewModel.addWish(Wish(title = viewModel.wishTitleState, description = viewModel.wishDescState))
-
+                        snackmessage.value = "wish has been created"
                     }
                 }else{
                     snackmessage.value = "enter fields to create a wish"
                 }
-
+                scope.launch {
+                    scaffoldState.snackbarHostState.showSnackbar(snackmessage.value)
+                    navController.navigateUp()
+                }
             }) {
                 Text(text = if (id != 0L) stringResource(id = R.string.Update_Wish) else stringResource(
                     id = R.string.Add_Wish))
